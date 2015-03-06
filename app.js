@@ -1,8 +1,16 @@
 // simple twitting application
 
-var express = require('express');
-var app = express(); 
-var swig = require('swig');
+var express = require('express');		// server framework
+var app = express(); 					// server instance
+var swig = require('swig');				// html template
+var routes = require('./routes/');		// routing files
+var router = express.Router();			// router middleware instance
+
+// mount routes functions 
+app.use('/', routes);
+
+// designating entire '/public' as serving static content
+app.use(express.static(__dirname + '/public'));
 
 // set server as listen
 var server = app.listen(3000, function() {
@@ -12,7 +20,7 @@ var server = app.listen(3000, function() {
 
 	console.log('server listening at http://%s:%s', host, port)
 
-})
+});
 
 // use swig.renderFile to render html
 app.engine('html', swig.renderFile);
@@ -30,13 +38,15 @@ swig.setDefaults( { cache: false });
 var people = [ {name: 'Full'}, {name: 'Stacker'}, {name: 'Son'}];
 
 // send rendered files
-app.get('/', function(req, res) {
-	// res.send('Hello World!')
-	res.render('index', {title: 'Hall of Fame', people: people});
-})
+// app.get('/', function(req, res) {
+// 	// res.send('Hello World!')
+// 	res.render('index', {title: 'Hall of Fame', people: people});
+// })
 
-
+// when accessing /news
 // app.get('/news', function(req, res) {
 // 	res.send('You hav reached /news!')
 // })
+
+
 
